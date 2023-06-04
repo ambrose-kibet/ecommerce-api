@@ -1,8 +1,8 @@
-const productShema = require("../Models/productShema");
-const { StatusCodes } = require("http-status-codes");
-const BadRequest = require("../Errors/BadRequest");
-const path = require("path");
-const NotFound = require("../Errors/NotFound");
+const productShema = require('../Models/productShema');
+const { StatusCodes } = require('http-status-codes');
+const BadRequest = require('../Errors/BadRequest');
+const path = require('path');
+const NotFound = require('../Errors/NotFound');
 const getAllProducts = async (req, res) => {
   const products = await productShema.find({});
 
@@ -37,24 +37,24 @@ const deleteProduct = async (req, res) => {
     throw new NotFound(`No product with id: ${req.params.id}`);
   }
   await product.remove();
-  res.status(StatusCodes.OK).json({ msg: "deleted successfully" });
+  res.status(StatusCodes.OK).json({ msg: 'deleted successfully' });
 };
 const uploadImage = async (req, res) => {
   const productImage = req.files.image;
 
   if (!productImage) {
-    throw new BadRequest("NO file uploaded");
+    throw new BadRequest('NO file uploaded');
   }
   const maxSize = 1024 * 1024;
   if (productImage.size > maxSize) {
-    throw new BadRequest("file size should be less than 1mb");
+    throw new BadRequest('file size should be less than 1mb');
   }
-  if (!productImage.mimetype.startsWith("image")) {
-    throw new BadRequest("please upload image file");
+  if (!productImage.mimetype.startsWith('image')) {
+    throw new BadRequest('please upload image file');
   }
   const destination = path.join(
     __dirname,
-    "../public/uploads/" + `${productImage.name}`
+    '../public/uploads/' + `${productImage.name}`
   );
   await productImage.mv(destination);
   res
